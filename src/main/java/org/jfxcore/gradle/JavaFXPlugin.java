@@ -40,6 +40,7 @@ import org.gradle.api.tasks.TaskCollection;
 import org.gradle.api.tasks.compile.GroovyCompile;
 import org.gradle.api.tasks.compile.JavaCompile;
 import org.gradle.api.tasks.scala.ScalaCompile;
+import org.gradle.jvm.tasks.Jar;
 import org.javamodularity.moduleplugin.ModuleSystemPlugin;
 import org.jfxcore.gradle.compiler.CompilerService;
 import org.jfxcore.gradle.tasks.CompileMarkupTask;
@@ -101,6 +102,14 @@ public class JavaFXPlugin implements Plugin<Project> {
                         compileMarkup.dependsOn(task);
                     }
                 }
+            }
+
+            for (var jarTask : project.getTasks().withType(Jar.class)) {
+                jarTask.dependsOn(compileMarkup);
+            }
+
+            for (var execTask : project.getTasks().withType(ExecTask.class)) {
+                execTask.dependsOn(compileMarkup);
             }
         });
     }
